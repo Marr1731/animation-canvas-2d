@@ -17,8 +17,8 @@ class Circle {
         this.color = color;
         this.text = text;
         this.speed = speed;
-        this.dx = 1 * this.speed;
-        this.dy = 1 * this.speed;
+        this.dx = 3 * this.speed;
+        this.dy = 3 * this.speed;
     }
 
     draw(context) {
@@ -38,14 +38,29 @@ class Circle {
     update(context) {
         this.draw(context);
 
-        if (this.posX + this.radius > window_width || this.posX - this.radius < 0) {
+        if (this.posX + this.radius >= window_width || this.posX - this.radius <= 0) {
+            // Invertimos la dirección en X si el borde del círculo toca el borde de la ventana
             this.dx = -this.dx;
+            // Ajustamos la posición para que el círculo no se atore en los bordes
+            if (this.posX + this.radius >= window_width) {
+                this.posX = window_width - this.radius;
+            } else {
+                this.posX = this.radius;
+            }
         }
 
-        if (this.posY - this.radius < 0 || this.posY + this.radius > window_height) {
+        if (this.posY - this.radius <= 0 || this.posY + this.radius >= window_height) {
+            // Invertimos la dirección en Y si el borde del círculo toca el borde de la ventana
             this.dy = -this.dy;
+            // Ajustamos la posición para que el círculo no se atore en los bordes
+            if (this.posY - this.radius <= 0) {
+                this.posY = this.radius;
+            } else {
+                this.posY = window_height - this.radius;
+            }
         }
 
+        // Actualizamos la posición del círculo según la velocidad
         this.posX += this.dx;
         this.posY += this.dy;
     }
@@ -73,11 +88,3 @@ let updateCircle = function() {
 }
 
 updateCircle();
-
-
-/* let micirculo = new Circle (100,100,50,"blue",'tec');
-micirculo.draw(ctx);
-
-
-let micirculo2 = new Circle (270,270,50,"black",'pachuca');
-micirculo2.draw(ctx); */
